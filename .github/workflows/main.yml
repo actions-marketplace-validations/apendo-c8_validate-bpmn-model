@@ -16,7 +16,6 @@ on:
 jobs:
   validate_bpmn:
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
       - name: Checkout code
@@ -32,7 +31,7 @@ jobs:
         
       - name: Copy custom rules
         run: |
-          cp -r ${{ inputs.custom-rules-folder }}/* ${{ env.BPMNLINT_RULES_PATH }}
+          cp -r ${{ inputs.custom-rules-folder }}/* ${{ secrets.BPMNLINT_RULES_PATH }}
         working-directory: ${{ github.workspace }}
         
       - name: List all available rules
