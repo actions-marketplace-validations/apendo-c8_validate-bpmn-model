@@ -46,7 +46,9 @@ jobs:
           cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc.txt
           mv .bpmnlintrc.txt .bpmnlintrc
 
-      - name: Run BPMN validation and output result  
-        run: bpmnlint bpmn-file-content.bpmn || true
+      - name: Run BPMN validation and output result
+        run: |
+          echo -e "\033[34m"
+          bpmnlint bpmn-file-content.bpmn || true
+          echo -e "\033[0m"
    
-        
