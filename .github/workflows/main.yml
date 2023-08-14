@@ -47,4 +47,9 @@ jobs:
           mv .bpmnlintrc.txt .bpmnlintrc
 
       - name: Run BPMN validation and output result
-        run:   bpmnlint bpmn-file-content.bpmn || true
+        run: |
+          if [ -z "$(bpmnlint bpmn-file-content.bpmn)" ]; then
+            echo "No errors found"
+          else
+            bpmnlint bpmn-file-content.bpmn || true
+          fi
