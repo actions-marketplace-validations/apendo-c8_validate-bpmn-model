@@ -40,5 +40,5 @@ To use this workflow, follow these steps:
 
 ## View the Validation Result
 
-After each workflow run (this utilizes on: push) [variants found here](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)], you can find the result of the validation under the step called "Run BPMN validation and output the result" in the [Actions tab](https://github.com/apendo-c8/call-validate-bpmn-demo/actions)
+After each workflow run (this utilizes on: push) [variants here](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions), you can find the result of the validation under the step called "Run BPMN validation and output the result" in the [Actions tab](https://github.com/apendo-c8/call-validate-bpmn-demo/actions)
 tab of your repository.
