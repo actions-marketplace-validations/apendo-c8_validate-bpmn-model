@@ -46,9 +46,9 @@ jobs:
         run: |
           for file in ${{ inputs.bpmn-files-path }}/*.bpmn; do
             if [ -z "$(bpmnlint "$file")" ]; then
-              echo "No errors found in $file"
+              echo -e "\033[32mNo errors found in $file\033[0m"
             else
-              echo "Errors found in $file:"
+              echo -e "\033[31mErrors found in $file:\033[0m"
               bpmnlint "$file" || true
             fi
           done
