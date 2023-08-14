@@ -3,7 +3,7 @@ name: Validate BPMN process model
 on:
   workflow_call:
     inputs:
-      bpmn-file-path:
+      bpmn-files-path:
         required: true
         type: string
       custom-rules-folder:
@@ -48,8 +48,10 @@ jobs:
 
       - name: Run BPMN validation and output result
         run: |
-          if [ -z "$(bpmnlint bpmn-file-content.bpmn)" ]; then
-            echo "No errors found"
-          else
-            bpmnlint bpmn-file-content.bpmn || true
-          fi
+          for file in ${{ inputs.bpmn-files-path }}/*.bpmn; do
+            if [ -z "$(bpmnlint "$file")" ]; then
+              echo "No errors found in $file"
+            else
+              bpmnlint "$file" || true
+            fi
+          done
