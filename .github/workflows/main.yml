@@ -48,6 +48,8 @@ jobs:
 
       - name: Run BPMN validation and output result  
         run: | 
-          echo -e "\033[34mRunning BPMN validation...\033[0m"
+          echo -e "\033[34m"
           bpmnlint bpmn-file-content.bpmn || true
+          echo -e "\033[0m"
+
 
