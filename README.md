@@ -16,7 +16,7 @@ To use this workflow, follow these steps:
 
    Open the `main.yml` file and paste the following code:
 
-   Make sure to replace the placeholder paths (`'path/to/your/bpmn-file.bpmn'`, `'path/to/your/custom_rules/'`, `'path/to/your/.bpmnlintrc'`) with the actual paths in your repository.
+   Make sure to replace the placeholder paths (`'path/to/your/bpmn-files.bpmn'`, `'path/to/your/custom_rules/'`, `'path/to/your/.bpmnlintrc'`) with the actual paths in your repository.
 
    Information on how to setup bmlint to utilize custom rules can be found here: [bpmn-io](https://github.com/bpmn-io/bpmnlint)
 
@@ -35,12 +35,12 @@ To use this workflow, follow these steps:
        uses: apendo-c8/validate-bpmn-model/.github/workflows/main.yml@main
 
        with:
-         bpmn-file-path: 'path/to/your/bpmn-file.bpmn'
-         custom-rules-folder: 'path/to/your/custom_rules/'
+         bpmn-file-path: 'path/to/your/bpmn-files-folder'
+         custom-rules-folder: 'path/to/your/custom_rules'
          bpmnlintrc-path: 'path/to/your/.bpmnlintrc'
    ```
 
 ## View the Validation Result
 
-After each workflow run (this utilizes on: push) [variants here](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions), you can find the result of the validation under the step called "Run BPMN validation and output the result" in the [Actions tab](https://github.com/apendo-c8/call-validate-bpmn-demo/actions)
+After each workflow run (this utilizes on: push) [variants here](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions), you can find the result of the validation under the step called "Run BPMN validation and output the result" under "Action tab" click the corresponding workflow run. The result of the validation is found under the step "Run BPMN validation and output the result"
 tab of your repository.
