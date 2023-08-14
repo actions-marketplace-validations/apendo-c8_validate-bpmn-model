@@ -16,7 +16,7 @@ To use this workflow, follow these steps:
 
    Open the `main.yml` file and paste the following code:
 
-   Make sure to replace the placeholder paths (`'path/to/your/bpmn-files.bpmn'`, `'path/to/your/custom_rules/'`, `'path/to/your/.bpmnlintrc'`) with the actual paths in your repository.
+   Make sure to replace the placeholder paths (`'path/to/your/bpmn-files-folder'`, `'path/to/your/custom_rules-folder'`, `'path/to/your/.bpmnlintrc-file'`) with the actual paths in your repository.
 
    Information on how to setup bmlint to utilize custom rules can be found here: [bpmn-io](https://github.com/bpmn-io/bpmnlint)
 
