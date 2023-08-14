@@ -8,7 +8,7 @@ To use this workflow, follow these steps:
 
 1. **Create a Workflow YAML File**
 
-   To create a GitHub workflow file, navigate to your repository's [Actions tab](https://github.com/apendo-c8/call-validate-bpmn-demo/actions), click "New workflow," select "Set up a workflow yourself," define your workflow using YAML syntax, and commit the file to the `.github/workflows` directory for automated execution based on events or schedules. Customize as needed.
+   To create a GitHub workflow file, navigate to your repository's Actions tab, click "New workflow," select "Set up a workflow yourself," define your workflow using YAML syntax, and commit the file to the `.github/workflows` directory for automated execution based on events or schedules. Customize as needed.
 
    Alternatively, create a `.github/workflows` directory in your repository (if not already present). Inside this directory, create a file named `main.yml`.
 
