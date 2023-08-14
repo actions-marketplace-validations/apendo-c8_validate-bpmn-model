@@ -47,5 +47,6 @@ jobs:
           mv .bpmnlintrc.txt .bpmnlintrc
 
       - name: Run BPMN validation and output result  
-        run:  bpmnlint bpmn-file-content.bpmn || true
+        run: bpmnlint bpmn-file-content.bpmn || true -e "\033[34mRunning bpmnlint\033[0m"
+   
         
