@@ -31,7 +31,7 @@ jobs:
         
       - name: Copy custom rules
         run: |
-          cp -r ${{ inputs.custom-rules-folder }}/* ${{ secrets.BPMNLINT_RULES_PATH }}
+          cp -r ${{ inputs.custom-rules-folder }}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
         working-directory: ${{ github.workspace }}
         
       - name: List all available rules
