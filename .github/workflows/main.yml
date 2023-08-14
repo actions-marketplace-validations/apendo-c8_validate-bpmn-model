@@ -47,6 +47,6 @@ jobs:
           mv .bpmnlintrc.txt .bpmnlintrc
 
       - name: Run BPMN validation and output result  
-        run: echo -e "\033[ bpmnlint bpmn-file-content.bpmn \033[0m" || true
+        run: bpmnlint bpmn-file-content.bpmn || true
    
         
