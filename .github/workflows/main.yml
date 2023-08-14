@@ -37,10 +37,6 @@ jobs:
       - name: List all available rules
         run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
         
-      - name: Read BPMN file content
-        run: |
-          cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
-          
       - name: Read and create .bpmnlintrc configuration file
         run: |
           cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc.txt
