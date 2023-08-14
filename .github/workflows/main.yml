@@ -48,6 +48,7 @@ jobs:
             if [ -z "$(bpmnlint "$file")" ]; then
               echo "No errors found in $file"
             else
+              echo "Errors found in $file:"
               bpmnlint "$file" || true
             fi
           done
