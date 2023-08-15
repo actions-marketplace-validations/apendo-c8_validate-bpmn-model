@@ -21,24 +21,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Set up NodeJs
+        uses: actions/setup-node@v3
         with:
           node-version: 18.17.0
 
-      - name: Install npm dependencies
+      - name: Install bpmnlint
         run: npm install -g bpmnlint
-
-      - name: List files in .github/workflows
-        run: ls -la ./.github/workflows
-
-      - name: List files in current directory
-        run: ls -la
-
-      - name: Run JavaScript script
-        run: node ./.github/workflows/validate-bpmn.js  # Use "./" to reference the current directory
-        env:
-          INPUT_CUSTOM_RULES_FOLDER: ${{ inputs.custom-rules-folder }}
-          INPUT_BPMNLINTRC_PATH: ${{ inputs.bpmnlintrc-path }}
-          INPUT_BPMN_FILES_PATH: ${{ inputs.bpmn-files-path }}
+        
+      - name: Copy custom rules
+        run: |
+          cp -r ${{ inputs.custom-rules-folder }}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
         working-directory: ${{ github.workspace }}
+        
+      - name: List all available rules
+        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
+        
+      - name: Read and create .bpmnlintrc configuration file
+        run: |
+          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc.txt
+          mv .bpmnlintrc.txt .bpmnlintrc
+
+      - name: Run BPMN validation and output result
+        run: |
+          for file in ${{ inputs.bpmn-files-path }}/*.bpmn; do
+            if [ -z "$(bpmnlint "$file")" ]; then
+              echo -e "\033[32mNo errors found in $file\033[0m"
+            else
+              echo -e "\033[31mErrors found in $file:\033[0m"
+              bpmnlint "$file" || true
+            fi
+          done  
