@@ -34,7 +34,6 @@ jobs:
         env:
           CUSTOM_RULES_FOLDER: ${{ inputs.custom-rules-folder }}
           BPMNLINTRC_PATH: ${{ inputs.bpmnlintrc-path }}
-        working-directory: ${{ github.workspace }}
 
       - name: Run BPMN validation and output result
         run: |
