@@ -30,9 +30,10 @@ jobs:
         run: npm install -g bpmnlint
         
       - name: Copy custom rules
-        run: node copy-rules.js
+        run:  copy-rules.js
         env:
           INPUT_CUSTOM_RULES_FOLDER: ${{ inputs.custom-rules-folder }}
+        working-directory: ${{ github.workspace }}
         
       - name: List all available rules
         run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
