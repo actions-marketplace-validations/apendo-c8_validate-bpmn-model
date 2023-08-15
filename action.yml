@@ -1,17 +1,19 @@
 name: 'Validate BPMN process model'
-description: 'A GitHub Action to validate BPMN process models'
+description: 'This action validates BPMN process models using bpmnlint'
 inputs:
   bpmn-files-path:
-    description: 'Path to the BPMN files'
+    description: 'Path to BPMN files for validation'
     required: true
+    default: '.'
   custom-rules-folder:
-    description: 'Path to the custom rules folder'
+    description: 'Path to custom rules folder'
     required: true
+    default: '.'
   bpmnlintrc-path:
-    description: 'Path to the .bpmnlintrc configuration file'
+    description: 'Path to .bpmnlintrc configuration file'
     required: true
+    default: '.'
+
 runs:
-  using: 'composite'
-  steps:
-    - run: ${{ github.action_path }}/main.yml
-      shell: bash
+  using: 'node18'
+  main: 'main.js'
