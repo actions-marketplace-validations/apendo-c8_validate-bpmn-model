@@ -30,14 +30,15 @@ jobs:
         run: npm install -g bpmnlint
 
       - name: List files in .github/workflows
-        run: ls -la .github/workflows
+        run: ls -la ./.github/workflows
 
       - name: List files in current directory
         run: ls -la
 
       - name: Run JavaScript script
-        run: node .github/workflows/validate-bpmn.js
+        run: node ./.github/workflows/validate-bpmn.js  # Use "./" to reference the current directory
         env:
           INPUT_CUSTOM_RULES_FOLDER: ${{ inputs.custom-rules-folder }}
           INPUT_BPMNLINTRC_PATH: ${{ inputs.bpmnlintrc-path }}
           INPUT_BPMN_FILES_PATH: ${{ inputs.bpmn-files-path }}
+        working-directory: ${{ github.workspace }}
