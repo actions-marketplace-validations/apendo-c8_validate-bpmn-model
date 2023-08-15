@@ -1,0 +1,17 @@
+name: 'Validate BPMN process model'
+description: 'A GitHub Action to validate BPMN process models'
+inputs:
+  bpmn-files-path:
+    description: 'Path to the BPMN files'
+    required: true
+  custom-rules-folder:
+    description: 'Path to the custom rules folder'
+    required: true
+  bpmnlintrc-path:
+    description: 'Path to the .bpmnlintrc configuration file'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - run: ${{ github.action_path }}/main.yml
+      shell: bash
