@@ -1,19 +1,54 @@
-name: 'Validate BPMN process model'
-description: 'This action validates BPMN process models using bpmnlint'
-inputs:
-  bpmn-files-path:
-    description: 'Path to BPMN files for validation'
-    required: true
-    default: '.'
-  custom-rules-folder:
-    description: 'Path to custom rules folder'
-    required: true
-    default: '.'
-  bpmnlintrc-path:
-    description: 'Path to .bpmnlintrc configuration file'
-    required: true
-    default: '.'
+name: Validate BPMN process model
 
-runs:
-  using: 'node18'
-  main: 'main.js'
+on:
+  workflow_call:
+    inputs:
+      bpmn-files-path:
+        required: true
+        type: string
+      custom-rules-folder:
+        required: true
+        type: string
+      bpmnlintrc-path: 
+        required: true
+        type: string
+
+jobs:
+  validate_bpmn:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up NodeJs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.17.0
+
+      - name: Install bpmnlint
+        run: npm install -g bpmnlint
+        
+      - name: Copy custom rules
+        run: |
+          cp -r ${{ inputs.custom-rules-folder }}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
+        working-directory: ${{ github.workspace }}
+        
+      - name: List all available rules
+        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
+        
+      - name: Read and create .bpmnlintrc configuration file
+        run: |
+          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc.txt
+          mv .bpmnlintrc.txt .bpmnlintrc
+
+      - name: Run BPMN validation and output result
+        run: |
+          for file in ${{ inputs.bpmn-files-path }}/*.bpmn; do
+            if [ -z "$(bpmnlint "$file")" ]; then
+              echo -e "\033[32mNo errors found in $file\033[0m"
+            else
+              echo -e "\033[31mErrors found in $file:\033[0m"
+              bpmnlint "$file" || true
+            fi
+          done
