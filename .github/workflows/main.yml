@@ -43,12 +43,7 @@ jobs:
           mv .bpmnlintrc.txt .bpmnlintrc
 
       - name: Run BPMN validation and output result
-        run: |
-          for file in ${{ inputs.bpmn-files-path }}/*.bpmn; do
-            if [ -z "$(bpmnlint "$file")" ]; then
-              echo -e "\033[32mNo errors found in $file\033[0m"
-            else
-              echo -e "\033[31mErrors found in $file:\033[0m"
-              bpmnlint "$file" || true
-            fi
-          done  
+        run: node validate-bpmn.js
+        env:
+          INPUT_BPMN_FILES_PATH: ${{ inputs.bpmn-files-path }}
+        working-directory: ${{ github.workspace }}
