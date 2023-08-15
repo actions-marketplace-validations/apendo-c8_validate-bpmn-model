@@ -1,39 +1,21 @@
-const { execSync } = require('child_process');
 const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
 
-const customRulesFolder = process.env.INPUT_CUSTOM_RULES_FOLDER;
-const bpmnlintrcPath = process.env.INPUT_BPMNLINTRC_PATH;
-const bpmnFilesPath = process.env.INPUT_BPMN_FILES_PATH;
+const customRulesFolder = process.env.CUSTOM_RULES_FOLDER;
 
 // Copy custom rules
-execSync(`cp -r ${customRulesFolder}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/`, {
-  cwd: process.env.GITHUB_WORKSPACE,
-  stdio: 'inherit'
-});
+const sourceFolder = path.join(customRulesFolder, '*');
+const targetFolder = '/opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/';
+const copyCommand = `cp -r ${sourceFolder} ${targetFolder}`;
+execSync(copyCommand, { stdio: 'inherit', shell: true });
 
 // List all available rules
-execSync('ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules', {
-  stdio: 'inherit'
-});
+const listRulesCommand = 'ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules';
+execSync(listRulesCommand, { stdio: 'inherit', shell: true });
 
 // Read and create .bpmnlintrc configuration file
+const bpmnlintrcPath = process.env.BPMNLINTRC_PATH;
 const bpmnlintrcContent = fs.readFileSync(bpmnlintrcPath, 'utf-8');
 fs.writeFileSync('.bpmnlintrc.txt', bpmnlintrcContent);
 fs.renameSync('.bpmnlintrc.txt', '.bpmnlintrc');
-
-// Run BPMN validation and output result
-const bpmnFiles = fs.readdirSync(bpmnFilesPath).filter(file => file.endsWith('.bpmn'));
-for (const file of bpmnFiles) {
-  try {
-    const result = execSync(`bpmnlint ${bpmnFilesPath}/${file}`).toString();
-    if (!result) {
-      console.log(`\x1b[32mNo errors found in ${file}\x1b[0m`);
-    } else {
-      console.log(`\x1b[31mErrors found in ${file}:\x1b[0m`);
-      console.log(result);
-    }
-  } catch (error) {
-    console.log(`\x1b[31mErrors found in ${file}:\x1b[0m`);
-    console.log(error.stdout.toString());
-  }
-}
