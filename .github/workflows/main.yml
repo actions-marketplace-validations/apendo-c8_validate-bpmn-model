@@ -1,3 +1,294 @@
+WORKING ACTIONS WORKFLOW
+
+name: BPMN-Lint Validation
+
+on:
+  workflow_call:
+    inputs:
+      bpmn-file-path:
+        required: true
+        type: string
+      custom-rules-folder:
+        required: true
+        type: string
+      bpmnlintrc-path: 
+        required: true
+        type: string
+
+jobs:
+  validate_bpmn:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.17.0
+
+      - name: Install bpmnlint
+        run: npm install -g bpmnlint
+        
+      - name: Find bpmnlint installation path
+        run: echo "$(which bpmnlint)"
+
+      - name: Print PATH variable
+        run: echo $PATH
+        
+      - name: Copy custom rules to bpmnlint/rules folder
+        run: |
+          cp -r ${{ inputs.custom-rules-folder }}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
+        working-directory: ${{ github.workspace }}  
+        
+      - name: List contents of bpmnlint/rules directory
+        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
+        
+      - name: Read BPMN file content
+        run: |
+          cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
+
+      - name: Output BPMN file content
+        run: cat bpmn-file-content.bpmn
+
+      - name: Create .bpmnlintrc
+        run: |
+          echo '{
+              "extends": "bpmnlint:recommended",
+              "rules": {
+                  "force-digit-id": "error",
+                  "force-service-task-type": "error"
+              }
+          }
+          ' > .bpmnlintrc
+
+      - name: Output .bpmnlintrc content
+        run: cat .bpmnlintrc
+
+ 
+
+
+      - name: Run BPMNLint (ignore exit code 1)
+        run: bpmnlint bpmn-file-content.bpmn || true
+		
+		
+USEFUL STEPS TO REMEMBER
+
+- name: List contents of /opt/hostedtoolcache/node/18.17.0/x64/bin
+        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/bin
+        
+      - name: List contents of /opt/hostedtoolcache/node/18.17.0/x64/bin/bpmnlint
+        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/bin/bpmnlint
+
+      - name: Install tree command
+        run: sudo apt-get update && sudo apt-get install tree -y
+
+      - name: Search for rules folder
+        run: find / -type d -name "rules" 2>/dev/null	
+
+
+
+
+
+
+
+
+//////////////////////////////////////
+
+name: BPMN-Lint Validation
+
+on:
+  workflow_call:
+    inputs:
+      bpmn-file-path:
+        required: true
+        type: string
+      custom-rules-folder:
+        required: true
+        type: string
+      bpmnlintrc-path: 
+        required: true
+        type: string
+
+jobs:
+  validate_bpmn:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.17.0
+
+      - name: Install bpmnlint
+        run: npm install -g bpmnlint
+        
+      - name: Copy custom rules to bpmnlint/rules folder
+        run: |
+          cp -r ${{ inputs.custom-rules-folder }}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
+        working-directory: ${{ github.workspace }}  
+        
+      - name: List contents of bpmnlint/rules directory
+        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
+        
+      - name: Read BPMN file content
+        run: |
+          cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
+
+      - name: Create .bpmnlintrc
+        run: |
+          echo '{
+              "extends": "bpmnlint:recommended",
+              "rules": {
+                  "force-digit-id": "error",
+                  "force-service-task-type": "error"
+              }
+          }
+          ' > .bpmnlintrc
+
+      - name: Output .bpmnlintrc content
+        run: cat .bpmnlintrc
+
+      - name: Run BPMNLint (ignore exit code 1)
+        run: bpmnlint bpmn-file-content.bpmn || true		
+		
+		
+		
+		
+		
+      - name: Read content of .bpmnlintrc
+        run: |
+          cat .bpmnlintrc > bpmnlintrc-content.json
+          
+      - name: Output .bpmnlintrc JSON
+        run: cat bpmnlintrc-content.json
+        
+      - name: Write content back to .bpmnlintrc
+        run: |
+          cat bpmnlintrc-content.json > .bpmnlintrc
+          
+      - name: Output .bpmnlintrc .BPMNLINTRC
+        run: cat bpmnlintrc-content.json   
+          
+      - name: Create .bpmnlintrc
+        run: |
+          echo '{
+              "extends": "bpmnlint:recommended",
+              "rules": {
+                  "force-digit-id": "error",
+                  "force-service-task-type": "error"
+              }
+          }
+          ' > .bpmnlintrc
+
+      - name: Output .bpmnlintrc content
+        run: cat .bpmnlintrc		
+		
+		
+		
+		
+		
+		{
+    "extends": "bpmnlint:recommended",
+    "rules": {
+        "force-digit-id": "error",
+        "force-service-task-type": "error"
+    }
+}
+
+
+
+
+
+ - name: Read .bpmnlintrc file
+        run: |
+          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc.txt
+          mv .bpmnlintrc.txt .bpmnlintrc
+
+      - name: Output .bpmnlintrc content
+        run: cat .bpmnlintrc
+		
+		
+		
+		
+		
+		
+name: Validate BPMN process model
+
+on:
+  workflow_call:
+    inputs:
+      bpmn-file-path:
+        required: true
+        type: string
+      custom-rules-folder:
+        required: true
+        type: string
+      bpmnlintrc-path: 
+        required: true
+        type: string
+
+jobs:
+  validate_bpmn:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up NodeJs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.17.0
+
+      - name: Install bpmnlint
+        run: npm install -g bpmnlint
+        
+      - name: Copy custom rules
+        run: |
+          cp -r ${{ inputs.custom-rules-folder }}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
+        working-directory: ${{ github.workspace }}
+        
+      - name: List all available rules
+        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
+        
+      - name: Read BPMN file content
+        run: |
+          cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
+          
+      - name: Read and create .bpmnlintrc configuration file
+        run: |
+          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc.txt
+          mv .bpmnlintrc.txt .bpmnlintrc
+
+      - name: Run BPMN validation and output result
+        run: |
+          if [ -z "$(bpmnlint bpmn-file-content.bpmn)" ]; then
+            echo "No errors found"
+          else
+            bpmnlint bpmn-file-content.bpmn || true
+          fi
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+apendo-c8/validate-bpmn-model/action.yml@main		
+
+
+
+
+
+
+
+THE REAL WORKING ONE:
+
 name: Validate BPMN process model
 
 on:
@@ -29,11 +320,18 @@ jobs:
       - name: Install bpmnlint
         run: npm install -g bpmnlint
         
-      - name: Run custom JavaScript file
-        run: node .github/workflows/run-bpmn-validation.js
-        env:
-          CUSTOM_RULES_FOLDER: ${{ inputs.custom-rules-folder }}
-          BPMNLINTRC_PATH: ${{ inputs.bpmnlintrc-path }}
+      - name: Copy custom rules
+        run: |
+          cp -r ${{ inputs.custom-rules-folder }}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
+        working-directory: ${{ github.workspace }}
+        
+      - name: List all available rules
+        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
+        
+      - name: Read and create .bpmnlintrc configuration file
+        run: |
+          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc.txt
+          mv .bpmnlintrc.txt .bpmnlintrc
 
       - name: Run BPMN validation and output result
         run: |
@@ -44,4 +342,5 @@ jobs:
               echo -e "\033[31mErrors found in $file:\033[0m"
               bpmnlint "$file" || true
             fi
-          done
+          done  
+		  
