@@ -30,25 +30,20 @@ jobs:
         run: npm install -g bpmnlint
         
       - name: Copy custom rules
-        run: |
-          cp -r ${{ inputs.custom-rules-folder }}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
+        run: node run-bpmn-validation.js copy-rules
+        env:
+          CUSTOM_RULES_FOLDER: ${{ inputs.custom-rules-folder }}
         working-directory: ${{ github.workspace }}
         
       - name: List all available rules
-        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
+        run: node run-bpmn-validation.js list-rules
         
       - name: Read and create .bpmnlintrc configuration file
-        run: |
-          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc.txt
-          mv .bpmnlintrc.txt .bpmnlintrc
-
+        run: node run-bpmn-validation.js create-lintrc
+        env:
+          BPMNLINTRC_PATH: ${{ inputs.bpmnlintrc-path }}
+        
       - name: Run BPMN validation and output result
-        run: |
-          for file in ${{ inputs.bpmn-files-path }}/*.bpmn; do
-            if [ -z "$(bpmnlint "$file")" ]; then
-              echo -e "\033[32mNo errors found in $file\033[0m"
-            else
-              echo -e "\033[31mErrors found in $file:\033[0m"
-              bpmnlint "$file" || true
-            fi
-          done
+        run: node run-bpmn-validation.js run-validation
+        env:
+          BPMN_FILES_PATH: ${{ inputs.bpmn-files-path }}
