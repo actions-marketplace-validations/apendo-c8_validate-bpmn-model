@@ -22,7 +22,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
-          repository: apendo-c8/validate-bpmn-model/.github/workflows/main.yml@main
           
       - name: Set up NodeJs
         uses: actions/setup-node@v3
