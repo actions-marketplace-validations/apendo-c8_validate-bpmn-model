@@ -20,7 +20,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+        with:
+          ref: main
+          repository: apendo-c8/validate-bpmn-model/.github/workflows/main.yml@main
+          
       - name: Set up NodeJs
         uses: actions/setup-node@v3
         with:
@@ -29,26 +32,10 @@ jobs:
       - name: Install bpmnlint
         run: npm install -g bpmnlint
         
-      - name: Copy custom rules
-        run: |
-          cp -r ${{ inputs.custom-rules-folder }}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
+      - name: Run JavaScript script
+        run: node .github/actions/validate-bpmn.js
+        env:
+          INPUT_CUSTOM_RULES_FOLDER: ${{ inputs.custom-rules-folder }}
+          INPUT_BPMNLINTRC_PATH: ${{ inputs.bpmnlintrc-path }}
+          INPUT_BPMN_FILES_PATH: ${{ inputs.bpmn-files-path }}
         working-directory: ${{ github.workspace }}
-        
-      - name: List all available rules
-        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
-
-      - name: Read and create .bpmnlintrc configuration file
-        run: |
-          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc.txt
-          mv .bpmnlintrc.txt .bpmnlintrc
-
-      - name: Run BPMN validation and output result
-        run: |
-          for file in ${{ inputs.bpmn-files-path }}/*.bpmn; do
-            if [ -z "$(bpmnlint "$file")" ]; then
-              echo -e "\033[32mNo errors found in $file\033[0m"
-            else
-              echo -e "\033[31mErrors found in $file:\033[0m"
-              bpmnlint "$file" || true
-            fi
-          done  
