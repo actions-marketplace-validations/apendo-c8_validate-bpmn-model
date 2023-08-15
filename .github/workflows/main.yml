@@ -36,6 +36,9 @@ jobs:
         
       - name: List all available rules
         run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
+
+      - name: List files in repo
+        run: ls -al apendo-c8/validate-bpmn-model/.github/workflows/
         
       - name: Read and create .bpmnlintrc configuration file
         run: |
