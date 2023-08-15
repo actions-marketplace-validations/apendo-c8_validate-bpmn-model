@@ -30,10 +30,10 @@ jobs:
         run: npm install -g bpmnlint
 
       - name: Copy JavaScript script
-        run: cp validate-bpmn.js ${{ github.workspace }}
-        
+        run: cp .github/workflows/validate-bpmn.js ${{ github.workspace }}/copy-of-script.js
+
       - name: Run JavaScript script
-        run: node validate-bpmn.js
+        run: node copy-of-script.js
         env:
           INPUT_CUSTOM_RULES_FOLDER: ${{ inputs.custom-rules-folder }}
           INPUT_BPMNLINTRC_PATH: ${{ inputs.bpmnlintrc-path }}
