@@ -29,18 +29,12 @@ jobs:
       - name: Install bpmnlint
         run: npm install -g bpmnlint
         
-      - name: Copy custom rules
-        run: |
-          cp -r ${{ inputs.custom-rules-folder }}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
+      - name: Run custom JavaScript file
+        run: node .github/workflows/run-bpmn-validation.js
+        env:
+          CUSTOM_RULES_FOLDER: ${{ inputs.custom-rules-folder }}
+          BPMNLINTRC_PATH: ${{ inputs.bpmnlintrc-path }}
         working-directory: ${{ github.workspace }}
-        
-      - name: List all available rules
-        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
-        
-      - name: Read and create .bpmnlintrc configuration file
-        run: |
-          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc.txt
-          mv .bpmnlintrc.txt .bpmnlintrc
 
       - name: Run BPMN validation and output result
         run: |
@@ -51,4 +45,4 @@ jobs:
               echo -e "\033[31mErrors found in $file:\033[0m"
               bpmnlint "$file" || true
             fi
-          done  
+          done
