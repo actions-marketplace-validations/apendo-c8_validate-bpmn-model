@@ -33,7 +33,7 @@ jobs:
         run: ls -al .github/workflows
 
       - name: List files in current directory
-        run: ls -al
+        run: ls -la
 
       - name: Run JavaScript script
         run: node .github/workflows/validate-bpmn.js
