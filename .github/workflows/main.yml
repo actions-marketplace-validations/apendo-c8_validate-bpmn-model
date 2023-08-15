@@ -30,7 +30,7 @@ jobs:
         run: npm install -g bpmnlint
 
       - name: List files in .github/workflows
-        run: ls -al .github/workflows
+        run: ls -la .github/workflows
 
       - name: List files in current directory
         run: ls -la
