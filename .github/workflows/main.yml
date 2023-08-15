@@ -31,4 +31,4 @@ jobs:
         
       - name: Run custom validation script
         run: |
-          node -e "const validationScript = require('./path/to/validation-script.js'); validationScript.copyCustomRules('${{ inputs.custom-rules-folder }}'); validationScript.listAvailableRules(); validationScript.createBpmnlintrcFile('${{ inputs.bpmnlintrc-path }}'); validationScript.runBpmnValidation('${{ inputs.bpmn-files-path }}');"
+          node -e "const validationScript = require('./validate-bpmn.js'); validationScript.copyCustomRules('${{ inputs.custom-rules-folder }}'); validationScript.listAvailableRules(); validationScript.createBpmnlintrcFile('${{ inputs.bpmnlintrc-path }}'); validationScript.runBpmnValidation('${{ inputs.bpmn-files-path }}');"
