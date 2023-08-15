@@ -44,6 +44,6 @@ To use this workflow, follow these steps:
 
 After each workflow run has finished (the example workflow above utilizes `on: push`) [variants and syntax are found here](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions), you find the result of the validation under the step `Run BPMN validation and output the result`. You find finished workflow runs under `Actions` tab and then choosing the corresponding workflow run.
 
-## Example
+## Example output
 
 ![Image](images/validation-result.png)
