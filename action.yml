@@ -1,5 +1,6 @@
 name: 'Validate BPMN process model'
 description: 'A reusable GitHub Action for validating BPMN process models'
+author: 'Kristoffer Högberg'
 inputs:
   bpmn-files-path:
     description: 'The path to the directory containing the BPMN files to validate'
