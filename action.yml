@@ -12,6 +12,6 @@ inputs:
     description: 'The path to the .bpmnlintrc configuration file'
     required: true
 runs:
-  using: 'node'
+  using: 'node16'
   main: 'dist/index.js'
   
